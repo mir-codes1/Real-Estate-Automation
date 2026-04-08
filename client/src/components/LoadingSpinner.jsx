@@ -1,6 +1,6 @@
 export function LoadingState() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-24">
+    <div className="flex flex-col items-center justify-center" style={{ gap: '16px', paddingTop: '96px', paddingBottom: '96px' }}>
       <div className="relative w-12 h-12">
         <svg width="48" height="48" viewBox="0 0 48 48" className="animate-spin" style={{ animationDuration: '1.6s' }}>
           <defs>
@@ -34,8 +34,16 @@ export function LoadingState() {
 export function ErrorState({ message }) {
   return (
     <div
-      className="flex items-start gap-3 mx-8 mt-6 px-5 py-4 rounded-[16px]"
+      className="flex items-start rounded-[16px]"
       style={{
+        gap: '12px',
+        marginLeft: '32px',
+        marginRight: '32px',
+        marginTop: '24px',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingTop: '16px',
+        paddingBottom: '16px',
         background:
           'linear-gradient(135deg, rgba(255,99,146,0.14) 0%, rgba(255,228,94,0.12) 100%)',
         border: '1px solid rgba(255,99,146,0.35)',
@@ -59,7 +67,7 @@ export function ErrorState({ message }) {
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: '#ff6392' }}>
           Connection interrupted
         </p>
-        <p className="text-[13px] mt-1 leading-snug" style={{ color: 'rgba(255,99,146,0.92)' }}>
+        <p className="text-[13px] leading-snug" style={{ color: 'rgba(255,99,146,0.92)', marginTop: '4px' }}>
           Could not load data — {message}
         </p>
       </div>

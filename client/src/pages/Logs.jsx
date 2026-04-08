@@ -22,8 +22,8 @@ export default function Logs() {
       {loading ? (
         <LoadingState />
       ) : (
-        <div className="p-7">
-          <div className="mb-5">
+        <div style={{ padding: '28px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <p className="text-[13px] text-[#9CA3AF]">Automation pipeline activity and system events</p>
           </div>
 
@@ -32,7 +32,7 @@ export default function Logs() {
               <thead>
                 <tr className="border-b border-[#E8EBF0]">
                   {['Event', 'Address', 'Message', 'Status', 'Time'].map(h => (
-                    <th key={h} className="px-5 py-3 text-left text-[11px] font-semibold text-[#9CA3AF] uppercase tracking-[0.06em] bg-[#FBFBFC]">
+                    <th key={h} className="text-left text-[11px] font-semibold text-[#9CA3AF] uppercase tracking-[0.06em] bg-[#FBFBFC]" style={{ padding: '12px 20px' }}>
                       {h}
                     </th>
                   ))}
@@ -41,20 +41,20 @@ export default function Logs() {
               <tbody>
                 {logs.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-5 py-8 text-center text-[13px] text-[#9CA3AF]">No logs yet.</td>
+                    <td colSpan={5} className="text-center text-[13px] text-[#9CA3AF]" style={{ padding: '32px 20px' }}>No logs yet.</td>
                   </tr>
                 ) : (
                   logs.map(log => (
                     <tr key={log.id} className="border-b border-[#F3F4F6] last:border-0 hover:bg-[#F7F8FA] transition-colors">
-                      <td className="px-5 py-3.5">
-                        <span className="inline-block text-[11.5px] font-mono font-medium text-[#2563EB] bg-[#EFF6FF] px-2 py-0.5 rounded-[4px] whitespace-nowrap">
+                      <td style={{ padding: '14px 20px' }}>
+                        <span className="inline-block text-[11.5px] font-mono font-medium text-[#2563EB] bg-[#EFF6FF] rounded-[4px] whitespace-nowrap" style={{ padding: '2px 8px' }}>
                           {log.event_type}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 text-[13px] text-[#6B7280] whitespace-nowrap">{log.address}</td>
-                      <td className="px-5 py-3.5 text-[13px] text-[#6B7280] max-w-xs truncate">{log.message}</td>
-                      <td className="px-5 py-3.5"><StatusBadge status={log.status} /></td>
-                      <td className="px-5 py-3.5 text-[12px] text-[#9CA3AF] whitespace-nowrap">{new Date(log.created_at).toLocaleString()}</td>
+                      <td className="text-[13px] text-[#6B7280] whitespace-nowrap" style={{ padding: '14px 20px' }}>{log.address}</td>
+                      <td className="text-[13px] text-[#6B7280] max-w-xs truncate" style={{ padding: '14px 20px' }}>{log.message}</td>
+                      <td style={{ padding: '14px 20px' }}><StatusBadge status={log.status} /></td>
+                      <td className="text-[12px] text-[#9CA3AF] whitespace-nowrap" style={{ padding: '14px 20px' }}>{new Date(log.created_at).toLocaleString()}</td>
                     </tr>
                   ))
                 )}

@@ -12,8 +12,10 @@ export default function StatusBadge({ status }) {
   const t = tones[status] ?? fallback;
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9.5px] font-semibold uppercase tracking-[0.16em]"
+      className="inline-flex items-center rounded-full text-[9.5px] font-semibold uppercase tracking-[0.16em]"
       style={{
+        gap: '6px',
+        padding: '4px 10px',
         background: t.bg,
         color: t.fg,
         boxShadow: `inset 0 0 0 1px ${t.ring}`,

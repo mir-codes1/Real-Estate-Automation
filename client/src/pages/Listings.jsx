@@ -67,9 +67,6 @@ function AlertIcon() {
 }
 
 // ─── action button ────────────────────────────────────────────────────────────
-//
-// Renders a small button that cycles through: idle → loading → success/error → idle
-// `variant` is either 'primary' (blue) or 'secondary' (gray)
 
 function ActionButton({ label, loadingLabel, icon, variant, status, message, onClick }) {
   const isLoading = status === 'loading';
@@ -90,7 +87,6 @@ function ActionButton({ label, loadingLabel, icon, variant, status, message, onC
     colorClass = 'bg-white text-[#6B7280] border-[#E8EBF0] hover:bg-[#F7F8FA] cursor-pointer';
   }
 
-  // Truncate long error messages so they don't blow out the column
   const displayMsg = isError && message.length > 22 ? message.slice(0, 22) + '…' : message;
 
   return (
@@ -98,7 +94,8 @@ function ActionButton({ label, loadingLabel, icon, variant, status, message, onC
       onClick={onClick}
       disabled={isLoading}
       title={isError ? message : undefined}
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[5px] text-[11.5px] font-medium border transition-colors select-none ${colorClass}`}
+      className={`inline-flex items-center rounded-[5px] text-[11.5px] font-medium border transition-colors select-none ${colorClass}`}
+      style={{ gap: '6px', padding: '6px 10px' }}
     >
       {isLoading ? <SpinnerIcon />
         : isSuccess ? <CheckIcon />
@@ -119,8 +116,6 @@ export default function Listings() {
   const { data, loading, error, refetch } = useFetch('/api/listings');
   const listings = data?.listings ?? [];
 
-  // actions[listingId] = { process: ActionState, automation: ActionState }
-  // ActionState = { status: 'idle' | 'loading' | 'success' | 'error', message: string }
   const [actions, setActions] = useState({});
 
   function getActionStatus(id, type) {
@@ -180,8 +175,8 @@ export default function Listings() {
       {loading ? (
         <LoadingState />
       ) : (
-        <div className="p-7">
-          <div className="mb-5">
+        <div style={{ padding: '28px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <p className="text-[13px] text-[#9CA3AF]">Sold Toronto properties in the database</p>
           </div>
 
@@ -190,7 +185,7 @@ export default function Listings() {
               <thead>
                 <tr className="border-b border-[#E8EBF0]">
                   {['Address', 'Neighborhood', 'Price', 'Beds', 'Baths', 'Sold Date', 'Actions'].map(h => (
-                    <th key={h} className="px-5 py-3 text-left text-[11px] font-semibold text-[#9CA3AF] uppercase tracking-[0.06em] bg-[#FBFBFC]">
+                    <th key={h} className="text-left text-[11px] font-semibold text-[#9CA3AF] uppercase tracking-[0.06em] bg-[#FBFBFC]" style={{ padding: '12px 20px' }}>
                       {h}
                     </th>
                   ))}
@@ -199,21 +194,21 @@ export default function Listings() {
               <tbody>
                 {listings.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-5 py-8 text-center text-[13px] text-[#9CA3AF]">
+                    <td colSpan={7} className="text-center text-[13px] text-[#9CA3AF]" style={{ padding: '32px 20px' }}>
                       No listings found.
                     </td>
                   </tr>
                 ) : (
                   listings.map(listing => (
                     <tr key={listing.id} className="border-b border-[#F3F4F6] last:border-0 hover:bg-[#F7F8FA] transition-colors">
-                      <td className="px-5 py-3.5 text-[13px] font-medium text-[#1C1F26]">{listing.address}</td>
-                      <td className="px-5 py-3.5 text-[13px] text-[#6B7280]">{listing.neighborhood}</td>
-                      <td className="px-5 py-3.5 text-[13px] font-medium text-[#1C1F26]">{formatPrice(listing.price)}</td>
-                      <td className="px-5 py-3.5 text-[13px] text-[#6B7280]">{listing.beds}</td>
-                      <td className="px-5 py-3.5 text-[13px] text-[#6B7280]">{listing.baths}</td>
-                      <td className="px-5 py-3.5 text-[12.5px] text-[#9CA3AF]">{listing.sold_date}</td>
-                      <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-2">
+                      <td className="text-[13px] font-medium text-[#1C1F26]" style={{ padding: '14px 20px' }}>{listing.address}</td>
+                      <td className="text-[13px] text-[#6B7280]" style={{ padding: '14px 20px' }}>{listing.neighborhood}</td>
+                      <td className="text-[13px] font-medium text-[#1C1F26]" style={{ padding: '14px 20px' }}>{formatPrice(listing.price)}</td>
+                      <td className="text-[13px] text-[#6B7280]" style={{ padding: '14px 20px' }}>{listing.beds}</td>
+                      <td className="text-[13px] text-[#6B7280]" style={{ padding: '14px 20px' }}>{listing.baths}</td>
+                      <td className="text-[12.5px] text-[#9CA3AF]" style={{ padding: '14px 20px' }}>{listing.sold_date}</td>
+                      <td style={{ padding: '14px 20px' }}>
+                        <div className="flex items-center" style={{ gap: '8px' }}>
                           <ActionButton
                             label="Process"
                             loadingLabel="Processing…"

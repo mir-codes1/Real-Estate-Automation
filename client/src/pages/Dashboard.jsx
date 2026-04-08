@@ -67,10 +67,10 @@ function PanelCard({ eyebrow, title, count, to, delayClass, children }) {
   return (
     <div className={`rise ${delayClass} rounded-[16px]`} style={SURFACE_STYLE}>
       <div
-        className="px-12 pt-9 pb-6 flex items-center justify-between"
-        style={{ borderBottom: '1px solid rgba(90,169,230,0.18)' }}
+        className="flex items-center justify-between"
+        style={{ paddingLeft: '28px', paddingRight: '28px', paddingTop: '10px', paddingBottom: '10px', borderBottom: '1px solid rgba(90,169,230,0.18)' }}
       >
-        <div className="flex items-baseline gap-3">
+        <div className="flex items-center gap-3">
           <span
             className="text-[9px] font-semibold uppercase tracking-[0.26em]"
             style={{ color: 'rgba(90,169,230,0.65)' }}
@@ -82,11 +82,12 @@ function PanelCard({ eyebrow, title, count, to, delayClass, children }) {
             <span style={{ color: '#ff6392' }}>.</span>
           </h3>
           <span
-            className="text-[10px] font-semibold px-2.5 py-1 rounded-full tabular"
+            className="text-[11px] font-semibold rounded-full tabular"
             style={{
               color: '#5aa9e6',
               background: 'rgba(127,200,248,0.22)',
               border: '1px solid rgba(90,169,230,0.3)',
+              padding: '1px 4px',
             }}
           >
             {count}
@@ -100,7 +101,7 @@ function PanelCard({ eyebrow, title, count, to, delayClass, children }) {
           View all →
         </Link>
       </div>
-      <div className="px-10 py-4">{children}</div>
+      <div style={{ paddingLeft: '24px', paddingRight: '24px', paddingTop: '16px', paddingBottom: '16px' }}>{children}</div>
     </div>
   );
 }
@@ -126,7 +127,7 @@ function Row({ barColor, isLast, children }) {
         className="absolute left-2 top-6 bottom-6 w-[3px] rounded-full transition-all duration-300 group-hover:top-3 group-hover:bottom-3"
         style={{ background: barColor, boxShadow: `0 0 14px ${barColor}` }}
       />
-      <div className="pl-8 pr-6 py-8 flex items-start justify-between gap-6">
+      <div className="flex items-start justify-between" style={{ paddingLeft: '20px', paddingRight: '20px', paddingTop: '20px', paddingBottom: '20px', gap: '24px' }}>
         {children}
       </div>
     </div>
@@ -153,8 +154,8 @@ function StatCard({ label, value, sub, icon, accent, hint }) {
 
   return (
     <div
-      className="relative rounded-[16px] px-12 py-10 group transition-transform duration-300 hover:-translate-y-1"
-      style={SURFACE_STYLE}
+      className="relative rounded-[16px] group transition-transform duration-300 hover:-translate-y-1"
+      style={{ ...SURFACE_STYLE, paddingLeft: '28px', paddingRight: '28px', paddingTop: '20px', paddingBottom: '20px' }}
     >
       {/* soft glow blob — clipped by inner wrapper so card itself never clips text */}
       <div className="absolute inset-0 rounded-[16px] overflow-hidden pointer-events-none">
@@ -222,8 +223,8 @@ function SuccessArc({ rate, successPosts, resolvedPosts }) {
 
   return (
     <div
-      className="relative h-full rounded-[16px] px-14 py-11 flex flex-col md:flex-row items-stretch gap-8 group transition-transform duration-300 hover:-translate-y-1"
-      style={SURFACE_STYLE}
+      className="relative h-full rounded-[16px] flex flex-col md:flex-row items-stretch gap-8 group transition-transform duration-300 hover:-translate-y-1"
+      style={{ ...SURFACE_STYLE, paddingLeft: '30px', paddingRight: '30px', paddingTop: '22px', paddingBottom: '22px' }}
     >
       {/* glow — clipped by inner wrapper only */}
       <div className="absolute inset-0 rounded-[16px] overflow-hidden pointer-events-none">
@@ -392,11 +393,11 @@ export default function Dashboard() {
           </section>
 
           {/* Stats: hero + 3 stacked */}
-          <section className="grid grid-cols-1 xl:grid-cols-3 gap-10" style={{ marginBottom: '2.5rem' }}>
+          <section className="grid grid-cols-1 xl:grid-cols-3" style={{ gap: '1.45rem', marginBottom: '1.45rem' }}>
             <div className="xl:col-span-2 rise rise-2 h-full">
               <SuccessArc rate={successRate} successPosts={successPosts} resolvedPosts={resolvedPosts} />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-10 rise rise-3 h-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 rise rise-3 h-full" style={{ gap: '1.45rem' }}>
               <StatCard
                 label="Total Listings"
                 value={listings.length}
@@ -424,7 +425,7 @@ export default function Dashboard() {
             </div>
           </section>
 
-          <section className="grid grid-cols-1 sm:grid-cols-2 gap-10 rise rise-4" style={{ marginBottom: '2.5rem' }}>
+          <section className="grid grid-cols-1 sm:grid-cols-2 rise rise-4" style={{ gap: '1.45rem', marginBottom: '1.45rem' }}>
             <StatCard
               label="Total Logs"
               value={logs.length}
@@ -438,13 +439,13 @@ export default function Dashboard() {
               hint="Telemetry"
             />
             <div
-              className="rounded-[16px] px-12 py-10 relative group transition-transform duration-300 hover:-translate-y-1"
-              style={SURFACE_STYLE}
+              className="rounded-[16px] relative group transition-transform duration-300 hover:-translate-y-1"
+              style={{ ...SURFACE_STYLE, paddingLeft: '28px', paddingRight: '28px', paddingTop: '12px', paddingBottom: '20px' }}
             >
               <div className="absolute inset-0 rounded-[16px] overflow-hidden pointer-events-none">
                 <div
-                  className="absolute -bottom-16 -right-10 w-52 h-52 rounded-full"
-                  style={{ background: 'radial-gradient(closest-side, rgba(255,228,94,0.55), transparent 70%)' }}
+                  className="absolute -top-16 -right-16 w-44 h-44 rounded-full opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: 'radial-gradient(closest-side, rgba(255,228,94,0.8), transparent 70%)' }}
                 />
               </div>
               <div className="relative">
@@ -455,8 +456,8 @@ export default function Dashboard() {
                   Pending queue
                 </span>
                 <p
-                  className="font-serif-display tabular leading-[0.9] mt-5"
-                  style={{ fontSize: 56, color: '#5aa9e6' }}
+                  className="font-serif-display tabular leading-[0.9]"
+                  style={{ fontSize: 56, color: '#5aa9e6', marginTop: '20px' }}
                 >
                   {pendingPosts}
                 </p>
@@ -475,7 +476,7 @@ export default function Dashboard() {
           </section>
 
           {/* Panels: Recent Posts + Recent Logs */}
-          <section className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+          <section className="grid grid-cols-1 xl:grid-cols-2" style={{ gap: '1.45rem', marginBottom: '1.45rem' }}>
             {/* Recent Posts */}
             <PanelCard
               eyebrow="Recent"

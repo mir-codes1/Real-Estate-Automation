@@ -25,20 +25,20 @@ export default function Posts() {
       {loading ? (
         <LoadingState />
       ) : (
-        <div className="p-7">
-          <div className="mb-5">
+        <div style={{ padding: '28px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <p className="text-[13px] text-[#9CA3AF]">AI-generated captions queued for social posting</p>
           </div>
 
           {posts.length === 0 ? (
             <p className="text-[13px] text-[#9CA3AF]">No posts yet. Process a listing to generate one.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="flex flex-col" style={{ gap: '12px' }}>
               {posts.map(post => (
-                <div key={post.id} className="bg-white rounded-[8px] border border-[#E8EBF0] p-5 hover:border-[#D1D5DB] transition-colors">
+                <div key={post.id} className="bg-white rounded-[8px] border border-[#E8EBF0] hover:border-[#D1D5DB] transition-colors" style={{ padding: '20px' }}>
 
-                  <div className="flex items-center justify-between gap-4 mb-3">
-                    <div className="min-w-0 flex items-baseline gap-1.5">
+                  <div className="flex items-center justify-between" style={{ gap: '16px', marginBottom: '12px' }}>
+                    <div className="min-w-0 flex items-baseline" style={{ gap: '6px' }}>
                       <span className="text-[13px] font-medium text-[#1C1F26]">{post.address}</span>
                       {post.neighborhood && (
                         <>
@@ -47,8 +47,8 @@ export default function Posts() {
                         </>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[11.5px] font-medium text-[#9CA3AF] bg-[#F3F4F6] px-2 py-0.5 rounded-[4px] capitalize">
+                    <div className="flex items-center shrink-0" style={{ gap: '8px' }}>
+                      <span className="text-[11.5px] font-medium text-[#9CA3AF] bg-[#F3F4F6] rounded-[4px] capitalize" style={{ padding: '2px 8px' }}>
                         {post.platform}
                       </span>
                       <StatusBadge status={post.status} />
@@ -59,7 +59,7 @@ export default function Posts() {
                     {post.caption}
                   </p>
 
-                  <p className="text-[11.5px] text-[#9CA3AF] mt-3">{new Date(post.created_at).toLocaleString()}</p>
+                  <p className="text-[11.5px] text-[#9CA3AF]" style={{ marginTop: '12px' }}>{new Date(post.created_at).toLocaleString()}</p>
 
                 </div>
               ))}

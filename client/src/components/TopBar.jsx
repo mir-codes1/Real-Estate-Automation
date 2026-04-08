@@ -1,15 +1,22 @@
 export default function TopBar({ icon, title, right }) {
   return (
     <div
-      className="sticky top-4 z-20 mx-4 mt-4 px-8 py-5 flex items-center justify-between shrink-0 relative rounded-[16px]"
+      className="sticky top-4 z-20 flex items-center justify-between shrink-0 relative rounded-[16px]"
       style={{
+        marginLeft: '16px',
+        marginRight: '16px',
+        marginTop: '16px',
+        paddingLeft: '32px',
+        paddingRight: '32px',
+        paddingTop: '20px',
+        paddingBottom: '20px',
         background: '#f9f9f9',
         border: '1px solid rgba(90,169,230,0.22)',
         boxShadow:
           '0 20px 40px -28px rgba(90,169,230,0.4), 0 8px 20px -14px rgba(255,99,146,0.18), inset 0 1px 0 rgba(255,255,255,0.9)',
       }}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center" style={{ gap: '12px' }}>
         {icon && (
           <span
             className="flex items-center justify-center w-9 h-9 rounded-[12px]"
@@ -32,15 +39,15 @@ export default function TopBar({ icon, title, right }) {
             Souvenote / Workspace
           </span>
           <span
-            className="font-serif-display text-[22px] leading-none mt-0.5"
-            style={{ color: '#5aa9e6' }}
+            className="font-serif-display text-[22px] leading-none"
+            style={{ color: '#5aa9e6', marginTop: '2px' }}
           >
             {title}
             <span style={{ color: '#ff6392' }}>.</span>
           </span>
         </div>
       </div>
-      {right && <div className="flex items-center gap-2">{right}</div>}
+      {right && <div className="flex items-center" style={{ gap: '8px' }}>{right}</div>}
 
       {/* shimmer underline */}
       <div

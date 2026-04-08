@@ -8,11 +8,12 @@ import Logs from './pages/Logs';
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen p-4 gap-4">
+      <div className="flex min-h-screen" style={{ padding: '16px', gap: '16px' }}>
         <Sidebar />
         <main
-          className="flex-1 rounded-[20px] relative isolate mt-4"
+          className="flex-1 rounded-[20px] relative isolate"
           style={{
+            marginTop: '16px',
             paddingLeft: '25px',
             paddingRight: '25px',
             paddingTop: '25px',
