@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://real-estate-automation-74zd.onrender.com/api/:path*"
+    }
+  ]
+}
