@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://real-estate-automation-backend-7d1850cdefca.herokuapp.com/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
