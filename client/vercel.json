@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://real-estate-automation-74zd.onrender.com/api/:path*"
+      "destination": "https://real-estate-automation-backend-7d1850cdefca.herokuapp.com/api/:path*"
     }
   ]
 }
