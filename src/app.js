@@ -8,6 +8,7 @@ const aiRouter = require('./routes/ai');
 const postsRouter = require('./routes/posts');
 const logsRouter = require('./routes/logs');
 const automationRouter = require('./routes/automation');
+const seedRouter = require('./routes/seed');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/ai', aiRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/logs', logsRouter);
 app.use('/api/automation', automationRouter);
+app.use('/api/seed', seedRouter);
 
 // 404 handler
 app.use((req, res) => {
