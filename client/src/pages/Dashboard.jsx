@@ -241,11 +241,13 @@ function SuccessArc({ rate, successPosts, resolvedPosts }) {
       <div className="relative flex-1 flex flex-col justify-between">
         <div>
           <span
-            className="inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.24em] px-2.5 py-1 rounded-full"
+            className="inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.24em] px-4 py-1 rounded-full"
             style={{
               color: '#5aa9e6',
               background: 'rgba(127,200,248,0.22)',
               border: '1px solid rgba(90,169,230,0.3)',
+              paddingLeft: '14px',
+              paddingRight: '14px',
             }}
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ffe45e' }} />
