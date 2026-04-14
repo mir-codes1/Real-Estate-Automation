@@ -517,14 +517,15 @@ export default function Dashboard() {
                           {post.caption}
                         </p>
                       </div>
-                      <div className="flex flex-col items-end gap-2 shrink-0">
+                      <div className="flex flex-col items-end gap-2 shrink-0" style={{ paddingRight: '8px' }}>
                         <StatusBadge status={post.status} />
                         <span
-                          className="text-[9.5px] font-semibold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
+                          className="text-[9.5px] font-semibold uppercase tracking-[0.2em] rounded-full"
                           style={{
                             color: '#5aa9e6',
                             background: 'rgba(127,200,248,0.2)',
                             border: '1px solid rgba(90,169,230,0.28)',
+                            padding: '4px 14px',
                           }}
                         >
                           {post.platform}
