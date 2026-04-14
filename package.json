@@ -8,7 +8,9 @@
     "dev": "nodemon src/server.js",
     "seed": "node scripts/seed.js",
     "build:client": "cd client && npm run build",
-    "install:all": "npm install && cd client && npm install"
+    "install:all": "npm install && cd client && npm install",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "pg": "^8.20.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "wrangler": "^4.82.2"
   }
 }
