@@ -1,17 +1,9 @@
-const Database = require('better-sqlite3');
-const path = require('path');
-const fs = require('fs');
+const { Pool } = require('pg');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../data/real_estate.db');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // Heroku Postgres requires SSL; skip cert verification (self-signed)
+  ...(process.env.DATABASE_URL && { ssl: { rejectUnauthorized: false } }),
+});
 
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-
-const db = new Database(DB_PATH);
-
-// Enable WAL mode for better concurrent read performance
-db.pragma('journal_mode = WAL');
-
-// Enforce foreign key constraints (SQLite disables them by default)
-db.pragma('foreign_keys = ON');
-
-module.exports = db;
+module.exports = pool;

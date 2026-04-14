@@ -1,14 +1,14 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 
-function getAllPosts(req, res) {
-  const posts = db.prepare(`
+async function getAllPosts(req, res) {
+  const result = await pool.query(`
     SELECT posts.*, listings.address, listings.neighborhood
     FROM posts
     LEFT JOIN listings ON posts.listing_id = listings.id
     ORDER BY posts.created_at DESC
-  `).all();
+  `);
 
-  res.json({ count: posts.length, posts });
+  res.json({ count: result.rows.length, posts: result.rows });
 }
 
 module.exports = { getAllPosts };

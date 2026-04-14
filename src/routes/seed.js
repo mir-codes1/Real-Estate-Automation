@@ -1,37 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/connection');
+const pool = require('../db/connection');
 const { initializeSchema } = require('../db/schema');
 const mockListings = require('../data/mockListings');
 
-router.post('/', (req, res) => {
-  initializeSchema();
-
-  const insert = db.prepare(`
-    INSERT INTO listings (address, price, beds, baths, neighborhood, sold_date, image_url)
-    VALUES (@address, @price, @beds, @baths, @neighborhood, @sold_date, @image_url)
-  `);
-
-  const checkExists = db.prepare(`
-    SELECT id FROM listings WHERE address = @address AND sold_date = @sold_date
-  `);
+router.post('/', async (req, res) => {
+  await initializeSchema();
 
   let inserted = 0;
   let skipped = 0;
 
-  const seedAll = db.transaction((listings) => {
-    for (const listing of listings) {
-      const existing = checkExists.get({ address: listing.address, sold_date: listing.sold_date });
-      if (existing) {
-        skipped++;
-      } else {
-        insert.run(listing);
-        inserted++;
-      }
-    }
-  });
+  for (const listing of mockListings) {
+    const existing = await pool.query(
+      'SELECT id FROM listings WHERE address = $1 AND sold_date = $2',
+      [listing.address, listing.sold_date]
+    );
 
-  seedAll(mockListings);
+    if (existing.rows.length > 0) {
+      skipped++;
+    } else {
+      await pool.query(
+        `INSERT INTO listings (address, price, beds, baths, neighborhood, sold_date, image_url)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [listing.address, listing.price, listing.beds, listing.baths, listing.neighborhood, listing.sold_date, listing.image_url]
+      );
+      inserted++;
+    }
+  }
 
   res.json({ inserted, skipped });
 });

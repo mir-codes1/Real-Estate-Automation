@@ -1,12 +1,13 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 
-function createLog({ listing_id = null, event_type, message, status }) {
-  const result = db.prepare(`
-    INSERT INTO logs (listing_id, event_type, message, status)
-    VALUES (@listing_id, @event_type, @message, @status)
-  `).run({ listing_id, event_type, message, status });
-
-  return db.prepare('SELECT * FROM logs WHERE id = ?').get(result.lastInsertRowid);
+async function createLog({ listing_id = null, event_type, message, status }) {
+  const result = await pool.query(
+    `INSERT INTO logs (listing_id, event_type, message, status)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [listing_id, event_type, message, status]
+  );
+  return result.rows[0];
 }
 
 module.exports = { createLog };

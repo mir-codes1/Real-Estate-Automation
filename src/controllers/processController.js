@@ -1,4 +1,4 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 const { getMockSchools } = require('../services/schoolsService');
 const { generateCaption } = require('../services/captionService');
 const { savePost } = require('../services/postsService');
@@ -8,10 +8,11 @@ async function processListing(req, res, next) {
   const { id } = req.params;
 
   // Step 1 — fetch listing
-  const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(id);
-  if (!listing) {
+  const listingResult = await pool.query('SELECT * FROM listings WHERE id = $1', [id]);
+  if (listingResult.rows.length === 0) {
     return res.status(404).json({ error: 'Listing not found' });
   }
+  const listing = listingResult.rows[0];
 
   try {
     // Step 2 — fetch nearby schools
@@ -21,10 +22,10 @@ async function processListing(req, res, next) {
     const caption = await generateCaption({ ...listing, schools });
 
     // Step 4 — save as draft post
-    const post = savePost({ listing_id: listing.id, caption });
+    const post = await savePost({ listing_id: listing.id, caption });
 
     // Step 5 — log success
-    const log = createLog({
+    const log = await createLog({
       listing_id: listing.id,
       event_type: 'process_listing',
       message: `Caption generated and saved as post #${post.id}`,
@@ -35,7 +36,7 @@ async function processListing(req, res, next) {
 
   } catch (err) {
     // Step 5 (failure path) — log the error before propagating
-    createLog({
+    await createLog({
       listing_id: listing.id,
       event_type: 'process_listing',
       message: err.message,

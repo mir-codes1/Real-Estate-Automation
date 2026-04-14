@@ -1,26 +1,26 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 
 const REQUIRED_FIELDS = ['address', 'price', 'beds', 'baths', 'neighborhood', 'sold_date'];
 
 // Matches YYYY-MM-DD only
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-function getAllListings(req, res) {
-  const listings = db.prepare('SELECT * FROM listings ORDER BY created_at DESC').all();
-  res.json({ count: listings.length, listings });
+async function getAllListings(req, res) {
+  const result = await pool.query('SELECT * FROM listings ORDER BY created_at DESC');
+  res.json({ count: result.rows.length, listings: result.rows });
 }
 
-function getListingById(req, res) {
-  const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(req.params.id);
+async function getListingById(req, res) {
+  const result = await pool.query('SELECT * FROM listings WHERE id = $1', [req.params.id]);
 
-  if (!listing) {
+  if (result.rows.length === 0) {
     return res.status(404).json({ error: 'Listing not found' });
   }
 
-  res.json(listing);
+  res.json(result.rows[0]);
 }
 
-function createListing(req, res) {
+async function createListing(req, res) {
   const body = req.body;
 
   // null and undefined both fail this check (== null catches both)
@@ -54,21 +54,22 @@ function createListing(req, res) {
     }
   }
 
-  const result = db.prepare(`
-    INSERT INTO listings (address, price, beds, baths, neighborhood, sold_date, image_url)
-    VALUES (@address, @price, @beds, @baths, @neighborhood, @sold_date, @image_url)
-  `).run({
-    address:      body.address,
-    price:        Number(body.price),
-    beds:         Number(body.beds),
-    baths:        Number(body.baths),
-    neighborhood: body.neighborhood,
-    sold_date:    body.sold_date,
-    image_url:    body.image_url || null,
-  });
+  const result = await pool.query(
+    `INSERT INTO listings (address, price, beds, baths, neighborhood, sold_date, image_url)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING *`,
+    [
+      body.address,
+      Number(body.price),
+      Number(body.beds),
+      Number(body.baths),
+      body.neighborhood,
+      body.sold_date,
+      body.image_url || null,
+    ]
+  );
 
-  const created = db.prepare('SELECT * FROM listings WHERE id = ?').get(result.lastInsertRowid);
-  res.status(201).json(created);
+  res.status(201).json(result.rows[0]);
 }
 
 module.exports = { getAllListings, getListingById, createListing };

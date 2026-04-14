@@ -1,4 +1,4 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 const { createLog } = require('../services/logsService');
 
 async function sendToAutomation(req, res, next) {
@@ -10,22 +10,25 @@ async function sendToAutomation(req, res, next) {
   }
 
   // Step 1 — fetch listing
-  const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(id);
-  if (!listing) {
+  const listingResult = await pool.query('SELECT * FROM listings WHERE id = $1', [id]);
+  if (listingResult.rows.length === 0) {
     return res.status(404).json({ error: 'Listing not found' });
   }
+  const listing = listingResult.rows[0];
 
   // Step 2 — fetch the latest draft post for this listing
-  const post = db.prepare(`
-    SELECT * FROM posts
-    WHERE listing_id = ? AND status = 'pending'
-    ORDER BY created_at DESC
-    LIMIT 1
-  `).get(id);
+  const postResult = await pool.query(
+    `SELECT * FROM posts
+     WHERE listing_id = $1 AND status = 'pending'
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [id]
+  );
 
-  if (!post) {
+  if (postResult.rows.length === 0) {
     return res.status(404).json({ error: 'No pending post found for this listing. Run /process first.' });
   }
+  const post = postResult.rows[0];
 
   // Step 3 — build payload and send to n8n
   const payload = {
@@ -60,7 +63,7 @@ async function sendToAutomation(req, res, next) {
     }
 
     // Step 4 — log success
-    const log = createLog({
+    const log = await createLog({
       listing_id: listing.id,
       event_type: 'send_to_automation',
       message: `Payload sent to n8n for post #${post.id}`,
@@ -71,7 +74,7 @@ async function sendToAutomation(req, res, next) {
 
   } catch (err) {
     // Step 4 — log failure
-    createLog({
+    await createLog({
       listing_id: listing.id,
       event_type: 'send_to_automation',
       message: err.message,

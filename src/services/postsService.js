@@ -1,12 +1,13 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 
-function savePost({ listing_id, caption, platform = 'draft', status = 'pending' }) {
-  const result = db.prepare(`
-    INSERT INTO posts (listing_id, caption, platform, status)
-    VALUES (@listing_id, @caption, @platform, @status)
-  `).run({ listing_id, caption, platform, status });
-
-  return db.prepare('SELECT * FROM posts WHERE id = ?').get(result.lastInsertRowid);
+async function savePost({ listing_id, caption, platform = 'draft', status = 'pending' }) {
+  const result = await pool.query(
+    `INSERT INTO posts (listing_id, caption, platform, status)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [listing_id, caption, platform, status]
+  );
+  return result.rows[0];
 }
 
 module.exports = { savePost };

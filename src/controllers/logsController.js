@@ -1,29 +1,28 @@
-const db = require('../db/connection');
+const pool = require('../db/connection');
 
-function getAllLogs(req, res) {
-  const logs = db.prepare(`
+async function getAllLogs(req, res) {
+  const result = await pool.query(`
     SELECT logs.*, listings.address
     FROM logs
     LEFT JOIN listings ON logs.listing_id = listings.id
     ORDER BY logs.created_at DESC
-  `).all();
+  `);
 
-  res.json({ count: logs.length, logs });
+  res.json({ count: result.rows.length, logs: result.rows });
 }
 
-function getLogsByListingId(req, res) {
-  const listing = db.prepare('SELECT id FROM listings WHERE id = ?').get(req.params.listingId);
-  if (!listing) {
+async function getLogsByListingId(req, res) {
+  const listing = await pool.query('SELECT id FROM listings WHERE id = $1', [req.params.listingId]);
+  if (listing.rows.length === 0) {
     return res.status(404).json({ error: 'Listing not found' });
   }
 
-  const logs = db.prepare(`
-    SELECT * FROM logs
-    WHERE listing_id = ?
-    ORDER BY created_at DESC
-  `).all(req.params.listingId);
+  const result = await pool.query(
+    `SELECT * FROM logs WHERE listing_id = $1 ORDER BY created_at DESC`,
+    [req.params.listingId]
+  );
 
-  res.json({ count: logs.length, logs });
+  res.json({ count: result.rows.length, logs: result.rows });
 }
 
 module.exports = { getAllLogs, getLogsByListingId };
